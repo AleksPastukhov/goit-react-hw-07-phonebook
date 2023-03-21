@@ -3,6 +3,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from '../GlobalStyle';
 import PhonebookSection from '../PhonebookSection';
 import { Wrapper } from './App.styled';
+// import {
+//   fetchContacts,
+//   addContact,
+//   deleteContact,
+// } from '../../services/contactApi';
+
+// fetchContacts().then(console.log).catch(console.log);
+// addContact().then(console.log).catch(console.log);
+// deleteContact(15).then(console.log).catch(console.log);
 
 export default function App() {
   return (
