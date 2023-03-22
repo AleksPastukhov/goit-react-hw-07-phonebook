@@ -26,12 +26,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-// {
-//   contacts: {
-//     items: [],
-//     isLoading: false,
-//     error: null
-//   },
-//   filter: ""
-// }
