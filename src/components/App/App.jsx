@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from '../GlobalStyle';
 import PhonebookSection from '../PhonebookSection';
 import { Wrapper } from './App.styled';
+
 // import {
 //   fetchContacts,
 //   addContact,
