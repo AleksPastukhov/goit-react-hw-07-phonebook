@@ -1,30 +1,53 @@
-import { persistReducer } from 'redux-persist';
 import { createSlice } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
+import { fetchContacts, addContact, deleteContact } from 'redux/operations';
 
-export const contactsSlice = createSlice({
+const handlePending = state => {
+  state.isLoading = true;
+};
+
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
+};
+
+const initialState = {
+  contactsList: [],
+  isLoading: false,
+  error: null,
+};
+
+const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: [] },
-  reducers: {
-    addContact(state, action) {
-      state.contacts.push(action.payload);
-    },
-    deleteContact(state, action) {
-      state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload
-      );
-    },
+  initialState: initialState,
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.pending, handlePending)
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.contactsList = action.payload;
+      })
+      .addCase(fetchContacts.rejected, handleRejected)
+      .addCase(addContact.pending, handlePending)
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.contactsList.push(action.payload);
+      })
+      .addCase(addContact.rejected, handleRejected)
+      .addCase(deleteContact.pending, handlePending)
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const index = state.contactsList.findIndex(
+          contact => contact.id === action.payload.id
+        );
+        state.contactsList.splice(index, 1);
+      })
+      .addCase(deleteContact.rejected, handleRejected);
   },
 });
 
-export const { deleteContact, addContact } = contactsSlice.actions;
+export const contactsReducer = contactsSlice.reducer;
 
-const persistConfig = {
-  key: 'contacts-list',
-  storage,
-};
-
-export const persisterContactsReduser = persistReducer(
-  persistConfig,
-  contactsSlice.reducer
-);
+export const { deleteLocalContact } = contactsSlice.actions;

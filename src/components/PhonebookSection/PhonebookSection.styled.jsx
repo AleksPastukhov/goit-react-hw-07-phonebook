@@ -32,3 +32,8 @@ export const Container = styled.div`
   padding: 10px;
   border-radius: 10px;
 `;
+export const LoaderContainer = styled.div`
+  display: inline-flex;
+  gap: 5px;
+  margin-left: 10px;
+`;

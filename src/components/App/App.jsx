@@ -1,19 +1,19 @@
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchContacts } from 'redux/operations';
 import GlobalStyle from '../GlobalStyle';
 import PhonebookSection from '../PhonebookSection';
 import { Wrapper } from './App.styled';
-// import {
-//   fetchContacts,
-//   addContact,
-//   deleteContact,
-// } from '../../services/contactApi';
-
-// fetchContacts().then(console.log).catch(console.log);
-// addContact().then(console.log).catch(console.log);
-// deleteContact(15).then(console.log).catch(console.log);
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <Wrapper>
       <ToastContainer
@@ -33,4 +33,3 @@ export default function App() {
     </Wrapper>
   );
 }
-//

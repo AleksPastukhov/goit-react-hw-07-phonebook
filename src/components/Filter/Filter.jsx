@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Div, Input, Span } from './Filter.styled';
-import { onChangeInput } from '../../redux/filterSlice';
+import { onChangeInput } from 'redux/filterSlice';
 import { getFilter } from '../../redux/selectors';
 
 export default function Filter() {
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
   const handleInput = e => {
-    dispatch(onChangeInput(e.currentTarget.value));
+    dispatch(onChangeInput(e.target.value));
   };
 
   return (

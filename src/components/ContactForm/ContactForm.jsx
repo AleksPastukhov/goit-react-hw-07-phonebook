@@ -2,10 +2,10 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
 import { UserForm } from './ContactForm.styled';
 import { object, string } from 'yup';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { getContacts } from '../../redux/selectors';
+import { selectContacts } from 'redux/selectors';
 
 const userSchema = object({
   name: string()
@@ -14,7 +14,7 @@ const userSchema = object({
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
     )
     .required(),
-  number: string()
+  phone: string()
     .matches(
       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
       'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
@@ -23,20 +23,20 @@ const userSchema = object({
 });
 
 export default function ContactForm() {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const createContact = (newName, newNumber) => {
     return {
       id: nanoid(4),
       name: newName,
-      number: newNumber,
+      phone: newNumber,
     };
   };
 
   const formSubmitHendler = (newName, newNumber) => {
-    for (let contact of contacts.contacts) {
-      if (contact.number === newNumber) {
+    for (let contact of contacts) {
+      if (contact.phone === newNumber) {
         toast.error(
           `
     Oops!!! this phone number ${newNumber} is already saved in your contact list under the name "${contact.name}".`
@@ -49,13 +49,13 @@ export default function ContactForm() {
   };
 
   const handleSubmit = (e, { resetForm }) => {
-    formSubmitHendler(e.name, e.number);
+    formSubmitHendler(e.name, e.phone);
     resetForm();
   };
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       onSubmit={handleSubmit}
       validationSchema={userSchema}
     >
@@ -67,8 +67,8 @@ export default function ContactForm() {
         </label>
         <label>
           <span>Number</span>
-          <Field type="tel" name="number" required />
-          <ErrorMessage name="number" />
+          <Field type="tel" name="phone" required />
+          <ErrorMessage name="phone" />
         </label>
         <button type="submit">Add contact</button>
       </UserForm>
